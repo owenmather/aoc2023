@@ -1,0 +1,8 @@
+# Python gitignore file
+#
+venv/
+.idea/
+*.pyc
+*.pyo
+*.pyd
+.env
