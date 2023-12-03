@@ -32,9 +32,7 @@ def download_input(year, day):
     # Get input.txt from Advent of Code
     url = f"https://adventofcode.com/{year}/day/{day}/input"
     resp = requests.get(url, cookies={"session": session_cookie})
-    if resp.status_code != 200:
-        raise Exception(f"Failed to download input.txt for year {year} day {day}")
-
+    resp.raise_for_status()
     # Save input.txt in same directory as this file
     with open("input.txt", 'w') as f:
         f.write(resp.text)
@@ -49,8 +47,7 @@ def send_answer(year, day, level, answer):
     # Get input.txt from Advent of Code
     url = f"https://adventofcode.com/{year}/day/{day}/answer"
     resp = requests.post(url, cookies={"session": session_cookie}, data={"level": level, "answer": answer})
-    if resp.status_code != 200:
-        raise resp.raise_for_status()
+    resp.raise_for_status()
     if "That's not the right answer" in resp.text:
         idx = resp.text.index("That's not the right answer")
         idx_end = resp.text.index(".", idx)
