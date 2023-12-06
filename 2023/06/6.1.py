@@ -13,9 +13,15 @@ def solve():
     """
     data = utils.read_input()
     data = data.split("\n")
-    res = 0
-    for line in data:
-        continue
+    res = 1
+    times = map(int, data.pop(0).split("Time:")[1].strip().split("     "))
+    distance = map(int, data.pop(0).split("Distance:")[1].strip().split("   "))
+    times_to_distance = list(zip(times, distance))
+    for (time, distance) in times_to_distance:
+        # For i in range(1,time):
+        # Distance is the sum of all ((time-i)*i) for i in range(1,time)
+        winning_games = len(list(filter(lambda x: x > distance, [((time - i) * i) for i in range(1, time)])))
+        res *= winning_games
     return res
 
 
