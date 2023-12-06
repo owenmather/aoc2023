@@ -11,12 +11,34 @@ def solve():
     Solve the problem here
     :return:
     """
-    data = utils.read_input()
-    data = data.split("\n")
-    res = 0
+    data = utils.read_input().split("\n")
+    seeds = [int(seed) for seed in data.pop(0).split(":")[1].strip().split(" ")]
+    order = ["seed", "soil", "fertilizer", "water", "light", "temperature", "humidity"]
+    order_idx = -1
+    mapinfo = {}
     for line in data:
-        continue
-    return res
+        # Build Map Data
+        if not line:
+            order_idx += 1
+            continue
+        if "map" in line:
+            source, dest = line.split(" map")[0].split("-to-")
+            mapinfo[source] = []
+        else:
+            d, s, r = line.split(" ")
+            mapinfo[order[order_idx]].append((int(d), int(s), int(r)))
+
+    locations = []
+    for seed in seeds:
+        cur_elem = seed
+        for o in order:
+            for (d, s, r) in mapinfo[o]:
+                if s <= cur_elem <= s + r:
+                    cur_elem = d + (cur_elem - s)
+                    break
+        locations.append(cur_elem)
+
+    return min(locations)
 
 
 if __name__ == "__main__":
