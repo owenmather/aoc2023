@@ -14,8 +14,22 @@ def solve():
     data = utils.read_input()
     data = data.split("\n")
     res = 0
+    instruction = data.pop(0)
+    data.pop(0)  # drop empty line
+    routes = {}
     for line in data:
-        continue
+        # Build the paths
+        source, paths = line.split(" = ")
+        paths = paths[1:-1].split(", ")
+        routes[source] = paths
+
+    position = "AAA"
+    lr = {"L": 0, "R": 1}
+    idx = 0
+    while position != "ZZZ":
+        position = routes[position][lr[instruction[idx]]]
+        idx = (idx + 1) % len(instruction)
+        res += 1
     return res
 
 
