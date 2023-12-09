@@ -1,9 +1,24 @@
 import os
 from dotenv import load_dotenv
-
 import utils
 
 load_dotenv()
+
+
+def generate_seq(ln, base, stack):
+    nums = list(map(int, ln))
+    seq = []
+    for idx, val in enumerate(nums[:-1]):
+        seq.append(nums[idx + 1] - val)
+    stack.append(nums[0])
+    if len(set(seq)) == 1:
+        # Now when everything is the same value we add extrapolate backwards
+        left_value = seq[0]
+        while stack:
+            # Stack contains all the previous left side values
+            left_value = stack.pop() - left_value
+        return left_value
+    return generate_seq(seq, base=base + nums[-1], stack=stack)
 
 
 def solve():
@@ -15,7 +30,8 @@ def solve():
     data = data.split("\n")
     res = 0
     for line in data:
-        continue
+        ans = generate_seq(line.split(" "), 0, [])
+        res += ans
     return res
 
 
